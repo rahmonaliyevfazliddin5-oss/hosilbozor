@@ -1,0 +1,22 @@
+{
+  "nav": {
+    "home": "Asosiy",
+    "listings": "Hosil Bozori",
+    "demand": "Talabnoma & Auksion",
+    "prices": "Bozor Narxlari",
+    "admin": "Admin Panel",
+    "login": "Kirish"
+  },
+  "hero": {
+    "title": "O'zbekistonning Ishonchli Agrar Web Platformasi",
+    "subtitle": "Fermer, ulgurji xaridor va haydovchini to'g'ridan-to'g'ri bog'lovchi, o'rtakashlarsiz xavfsiz escrow savdo maydoni.",
+    "cta_buy": "Hosil sotib olish",
+    "cta_sell": "Hosil sotish (Fermer)"
+  },
+  "features": {
+    "no_middlemen": "Dallollarsiz to'g'ridan-to'g'ri narx",
+    "escrow": "100% Xavfsiz to'lov (Escrow)",
+    "logistics": "Hosil va qaytish yuklari logistikasi",
+    "price_intel": "Viloyatlar bo'yicha narx razvedkasi"
+  }
+}
