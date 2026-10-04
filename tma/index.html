@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>HosilBozor — Tezkor Hosil Joylash</title>
+  <!-- Telegram WebApp SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    :root {
+      --primary: #10b981;
+      --primary-dark: #059669;
+      --bg: #f9fafb;
+      --card-bg: #ffffff;
+      --text: #111827;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: var(--bg); color: var(--text); padding: 16px; min-height: 100vh; }
+    .header { text-align: center; margin-bottom: 20px; }
+    .header h1 { font-size: 20px; font-weight: 700; color: #065f46; }
+    .header p { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+    .card { background: var(--card-bg); border-radius: 14px; padding: 18px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 16px; }
+    .form-group { margin-bottom: 14px; }
+    label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+    input, select, textarea {
+      width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border);
+      font-size: 15px; outline: none; background: #fafafa;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--primary); background: #fff; }
+    .row { display: flex; gap: 10px; }
+    .row .form-group { flex: 1; }
+    .photo-upload {
+      border: 2px dashed #a7f3d0; background: #ecfdf5; border-radius: 12px;
+      padding: 16px; text-align: center; cursor: pointer; position: relative;
+    }
+    .photo-upload input[type="file"] { opacity: 0; position: absolute; inset: 0; cursor: pointer; }
+    .photo-preview { margin-top: 10px; max-height: 140px; border-radius: 8px; display: none; object-fit: cover; }
+    .offline-badge {
+      display: inline-block; background: #fef3c7; color: #92400e; font-size: 11px;
+      padding: 4px 8px; border-radius: 12px; font-weight: 600; margin-bottom: 10px;
+    }
+    .btn-submit {
+      width: 100%; background: var(--primary); color: white; border: none;
+      padding: 15px; border-radius: 12px; font-size: 16px; font-weight: 700;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .btn-submit:active { background: var(--primary-dark); }
+    .badge-speed {
+      background: #dbeafe; color: #1e40af; font-size: 11px; padding: 2px 6px;
+      border-radius: 4px; margin-left: 6px;
+    }
+    .alert-success {
+      background: #d1fae5; color: #065f46; padding: 14px; border-radius: 10px;
+      text-align: center; font-weight: 600; margin-top: 14px; display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>🌾 HosilBozor <span class="badge-speed">⚡ 60s listing</span></h1>
+    <p>O'zbekiston agrar bozori — Vositachilarsiz to'g'ridan-to'g'ri sotuv</p>
+  </div>
+
+  <div id="offlineNotice" class="offline-badge" style="display:none;">
+    💾 Qoralama avtomatik saqlandi (Offline rejim)
+  </div>
+
+  <div class="card">
+    <form id="listingForm">
+      <div class="form-group">
+        <label for="cropSelect">Ekin turi:</label>
+        <select id="cropSelect" required>
+          <option value="crop-pomidor">🍅 Pomidor (Qizil, saralangan)</option>
+          <option value="crop-bodring">🥒 Bodring</option>
+          <option value="crop-kartoshka">🥔 Kartoshka</option>
+          <option value="crop-piyoz">🧅 Piyoz</option>
+          <option value="crop-anor">🍎 Anor (Quva)</option>
+          <option value="crop-uzum">🍇 Uzum (Qora kishmish)</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <div class="form-group">
+          <label for="quantity">Miqdor (kg):</label>
+          <input type="number" id="quantity" placeholder="Masalan: 5000" min="10" required>
+        </div>
+        <div class="form-group">
+          <label for="price">Narx (UZS/kg):</label>
+          <input type="number" id="price" placeholder="6500" min="100" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Hosil fotosurati (Kamida 1 ta):</label>
+        <div class="photo-upload">
+          <span>📷 Rasm yuklash (avtomatik siqish &lt;150KB)</span>
+          <input type="file" id="photoInput" accept="image/*">
+        </div>
+        <img id="photoPreview" class="photo-preview" alt="Preview">
+      </div>
+
+      <div class="form-group">
+        <label for="description">Izoh (ixtiyoriy):</label>
+        <textarea id="description" rows="2" placeholder="Masalan: Issiqxona pomidori, yangi uzilgan..."></textarea>
+      </div>
+
+      <button type="submit" class="btn-submit" id="submitBtn">E'lonni chop etish 🚀</button>
+    </form>
+    <div id="successAlert" class="alert-success">
+      ✅ E'loningiz qabul qilindi va platformada faollashtirildi!
+    </div>
+  </div>
+
+  <script>
+    // Initialize Telegram WebApp
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+      tg.ready();
+      tg.expand();
+    }
+
+    const DRAFT_KEY = "hb_farmer_listing_draft";
+    let compressedPhotoBase64 = null;
+
+    // Load draft from localStorage if available
+    window.addEventListener("DOMContentLoaded", () => {
+      const saved = localStorage.getItem(DRAFT_KEY);
+      if (saved) {
+        try {
+          const draft = JSON.parse(saved);
+          if (draft.crop) document.getElementById("cropSelect").value = draft.crop;
+          if (draft.quantity) document.getElementById("quantity").value = draft.quantity;
+          if (draft.price) document.getElementById("price").value = draft.price;
+          if (draft.description) document.getElementById("description").value = draft.description;
+          document.getElementById("offlineNotice").style.display = "inline-block";
+        } catch (e) {}
+      }
+    });
+
+    // Auto-save draft on input
+    ["cropSelect", "quantity", "price", "description"].forEach(id => {
+      document.getElementById(id).addEventListener("input", () => {
+        const draft = {
+          crop: document.getElementById("cropSelect").value,
+          quantity: document.getElementById("quantity").value,
+          price: document.getElementById("price").value,
+          description: document.getElementById("description").value
+        };
+        localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+      });
+    });
+
+    // Client-side image compression using HTML5 Canvas (low-bandwidth friendly)
+    document.getElementById("photoInput").addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          const maxDim = 800;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height && width > maxDim) {
+            height *= maxDim / width;
+            width = maxDim;
+          } else if (height > maxDim) {
+            width *= maxDim / height;
+            height = maxDim;
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Compress to WebP or JPEG with 0.7 quality (<150KB payload)
+          compressedPhotoBase64 = canvas.toDataURL("image/jpeg", 0.7);
+          const preview = document.getElementById("photoPreview");
+          preview.src = compressedPhotoBase64;
+          preview.style.display = "block";
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Form submission
+    document.getElementById("listingForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const submitBtn = document.getElementById("submitBtn");
+      submitBtn.disabled = true;
+      submitBtn.innerText = "Chop etilmoqda...";
+
+      // Clear draft
+      localStorage.removeItem(DRAFT_KEY);
+
+      setTimeout(() => {
+        submitBtn.style.display = "none";
+        document.getElementById("successAlert").style.display = "block";
+        if (tg) {
+          tg.HapticFeedback?.notificationOccurred("success");
+          setTimeout(() => tg.close(), 2000);
+        }
+      }, 700);
+    });
+  </script>
+</body>
+</html>
