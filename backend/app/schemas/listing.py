@@ -24,7 +24,7 @@ class ListingPhotoRead(ListingPhotoCreate):
 class ListingBase(BaseModel):
     crop_id: str
     district_id: Optional[str] = None
-    quantity: Decimal = Field(..., gt=0, description="Available quantity in crop units")
+    quantity: Decimal = Field(..., ge=0, description="Available quantity in crop units")
     min_order_quantity: Decimal = Field(default=Decimal("1.0"), gt=0)
     price_per_unit: Decimal = Field(..., gt=0, description="Price per unit in UZS")
     quality_grade: str = Field(default="standard", description="premium, standard, or processing")
@@ -35,7 +35,7 @@ class ListingBase(BaseModel):
 
 
 class ListingCreate(ListingBase):
-    pass
+    quantity: Decimal = Field(..., gt=0, description="Initial quantity must be greater than 0")
 
 
 class ListingUpdate(BaseModel):
