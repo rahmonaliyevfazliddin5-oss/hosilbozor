@@ -1,0 +1,33 @@
+{
+  "welcome": "HosilBozor - O'zbekiston agrar bozoriga xush kelibsiz!",
+  "auth": {
+    "otp_sent": "Tasdiqlash kodi telefoningizga yuborildi",
+    "invalid_otp": "Tasdiqlash kodi noto'g'ri yoki muddati o'tgan",
+    "user_not_found": "Foydalanuvchi topilmadi",
+    "unauthorized": "Avtorizatsiyadan o'tilmagan",
+    "forbidden": "Ushbu amalni bajarish uchun huquq yetarli emas",
+    "token_expired": "Sessiya muddati tugadi, qayta kiring"
+  },
+  "roles": {
+    "farmer": "Fermer / Dehqon",
+    "buyer": "Ulgurji xaridor",
+    "driver": "Yuk tashuvchi haydovchi",
+    "admin": "Administrator"
+  },
+  "orders": {
+    "created": "Buyurtma muvaffaqiyatli yaratildi",
+    "confirmed": "Fermer buyurtmani tasdiqladi",
+    "paid_escrow": "To'lov xavfsiz hisobda muzlatildi",
+    "picked_up": "Yuk haydovchi tomonidan olindi",
+    "delivered": "Yuk yetkazib berildi",
+    "completed": "Bitim muvaffaqiyatli yakunlandi",
+    "disputed": "Buyurtma bo'yicha e'tiroz bildirildi",
+    "cancelled": "Buyurtma bekor qilindi"
+  },
+  "listings": {
+    "created": "Hosil e'loni muvaffaqiyatli joylashtirildi",
+    "updated": "E'lon yangilandi",
+    "deleted": "E'lon o'chirildi",
+    "not_found": "E'lon topilmadi"
+  }
+}
