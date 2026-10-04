@@ -1,0 +1,59 @@
+================================================================================
+                    🌾 HOSILBOZOR — O'ZBEKISTON AGRAR BIRJASI 🌾
+                 KOMPYUTERGA O'RNATISH VA ISHLATISH QO'LLANMASI
+================================================================================
+
+Assalomu alaykum!
+Ushbu papka "HosilBozor" to'liq production-grade MVP platformasining barcha
+qismlarini o'z ichiga oladi:
+ 1. Web Platforma (Next.js 14, Tailwind CSS, TypeScript)
+ 2. Backend REST API (FastAPI, SQLAlchemy, PostGIS, Escrow to'lovlar)
+ 3. Telegram Bot (aiogram 3, FSM, @HosilBozorBot)
+ 4. Baza (SQLite tayyor ma'lumotlar bazasi - pomidor, bodring va barcha hosillar)
+
+--------------------------------------------------------------------------------
+1. TALAB QILINADIGAN DASTURLAR (PRE-REQUISITES)
+--------------------------------------------------------------------------------
+Kompyuteringizda quyidagilar o'rnatilgan bo'lishi kerak:
+  1) Python 3.10 yoki undan yangisi (O'rnatishda "Add Python to PATH" belgilansin)
+     Yuklab olish: https://www.python.org/downloads/
+  2) Node.js (v18 yoki v20 LTS)
+     Yuklab olish: https://nodejs.org/
+
+--------------------------------------------------------------------------------
+2. LOYIHANI O'RNATISH (SETUP) — BIRINCHI MARTA
+--------------------------------------------------------------------------------
+Faqat bir marta:
+  👉 "1_ORNATISH.bat" faylini sichqoncha bilan 2 marta bosing.
+
+U avtomatik ravishda:
+  - Backend uchun virtual muhit (venv) ochadi va kutubxonalarni o'rnatadi.
+  - Web sayt uchun barcha kerakli npm kutubxonalarini o'rnatadi.
+  - .env konfiguratsiyasini sozlaydi.
+
+--------------------------------------------------------------------------------
+3. LOYIHANI ISHGA TUSHIRISH (RUN)
+--------------------------------------------------------------------------------
+Har gal loyihani yoqish uchun:
+  👉 "2_ISHLATISH.bat" faylini bosing.
+
+Bu fayl bir vaqtning o'zida:
+  ✅ Backend API ni http://127.0.0.1:8000 da yoqadi.
+  ✅ Web platformani http://localhost:3000 da yoqadi va brauzerni ochadi.
+  ✅ @HosilBozorBot Telegram botini faollashtiradi.
+
+--------------------------------------------------------------------------------
+4. MANZILLAR VA HAVOLALAR:
+--------------------------------------------------------------------------------
+  🌐 Web Sayt:          http://localhost:3000
+  📚 Swagger API Docs:   http://localhost:8000/docs
+  🤖 Telegram Bot:       https://t.me/HosilBozorBot (yoki @HosilBozorBot)
+
+--------------------------------------------------------------------------------
+5. XAVFSIZLIK VA TOKENLAR:
+--------------------------------------------------------------------------------
+  .env faylida bot tokeni va barcha parametrlar tayyor holda kiritilgan.
+  Token: 8832587255:AAG_FNR3jpgPKWNPoxuGmgg3cmkzqmN4Lvs
+
+Muvaffaqiyatli foydalanish tilaymiz!
+================================================================================
