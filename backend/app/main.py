@@ -44,9 +44,15 @@ def health_check():
     }
 
 
+from fastapi.responses import RedirectResponse
+
+@app.get("/docs", include_in_schema=False)
+def docs_redirect():
+    return RedirectResponse(url=f"{settings.API_V1_STR}/docs")
+
 @app.get("/", tags=["root"])
 def root_redirect():
     return {
-        "message": "Welcome to HosilBozor API. See docs at /api/v1/docs",
+        "message": "HosilBozor API'siga xush kelibsiz. Hujjatlarni /api/v1/docs manzilida ko'ring",
         "docs": f"{settings.API_V1_STR}/docs"
     }
