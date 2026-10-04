@@ -40,6 +40,15 @@ class DriverProfile(Base, UUIDMixin, TimestampMixin):
     user = relationship("User", back_populates="driver_profile")
     vehicles = relationship("Vehicle", back_populates="driver", cascade="all, delete-orphan")
 
+    @property
+    def full_name(self) -> str:
+        return self.user.full_name if self.user else ""
+
+    @property
+    def phone(self) -> str:
+        return self.user.phone if self.user and self.user.phone else ""
+
+
 
 class Vehicle(Base, UUIDMixin, TimestampMixin):
     __tablename__ = "vehicles"

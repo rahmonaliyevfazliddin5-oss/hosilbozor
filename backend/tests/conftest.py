@@ -120,6 +120,20 @@ def buyer_headers(buyer_token: str) -> dict:
 
 
 @pytest.fixture
+def driver_token(driver_user: User) -> str:
+    return create_access_token(
+        subject=driver_user.id,
+        extra_claims={"role": driver_user.role.value, "phone": driver_user.phone}
+    )
+
+
+@pytest.fixture
+def driver_headers(driver_token: str) -> dict:
+    return {"Authorization": f"Bearer {driver_token}"}
+
+
+
+@pytest.fixture
 def admin_user(db: Session) -> User:
     user = user_repo.create(
         db,
