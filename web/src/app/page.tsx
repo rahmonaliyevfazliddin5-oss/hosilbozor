@@ -156,6 +156,23 @@ export default function HomePage() {
             Qidirish
           </button>
         </div>
+
+        {/* Quick Telegram Bot CTA */}
+        <div className="mt-4 flex flex-wrap items-center gap-3 text-xs text-[#5C5243]">
+          <span className="font-medium text-[#7D7364]">Fermermisiz yoki haydovchi?</span>
+          <a
+            href="https://t.me/HosilBozorBot"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#EBF5FB] hover:bg-[#D9EAF5] text-[#1E7FA8] font-bold border border-[#C5DFEE] transition shadow-xs group"
+            title="Telegram botimiz orqali tezkor e'lon bering"
+          >
+            <svg className="w-4 h-4 fill-[#2AABEE] group-hover:scale-110 transition-transform" viewBox="0 0 24 24">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.37.74-.56 2.92-1.27 4.86-2.11 5.83-2.52 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06-.01.17-.02.27z"/>
+            </svg>
+            <span>@HosilBozorBot orqali 60 soniyada e'lon bering &rarr;</span>
+          </a>
+        </div>
       </section>
 
       {/* 2. BUGUNGI BOZOR NARXLARI */}
@@ -780,8 +797,23 @@ export default function HomePage() {
             <p className="text-xs text-[#5C5243] max-w-sm leading-relaxed">
               O'zbekistonning birinchi raqamli agrar birjasi. Fermerlar, ulgurji xaridorlar va haydovchilarni to'g'ridan-to'g'ri bog'lovchi shaffof ekotizim.
             </p>
-            {/* Mobile App Download Badges */}
-            <div className="flex items-center space-x-3 pt-2">
+            {/* Telegram Bot & Mobile App Badges */}
+            <div className="flex flex-wrap items-center gap-2.5 pt-2">
+              <a
+                href="https://t.me/HosilBozorBot"
+                target="_blank"
+                rel="noreferrer"
+                className="bg-[#2AABEE] text-white px-4 py-2 rounded-xl flex items-center space-x-2.5 hover:bg-[#229ED9] transition shadow-sm text-xs group"
+                title="@HosilBozorBot Telegram boti"
+              >
+                <svg className="w-5 h-5 fill-white group-hover:scale-110 transition-transform" viewBox="0 0 24 24">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.37.74-.56 2.92-1.27 4.86-2.11 5.83-2.52 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06-.01.17-.02.27z"/>
+                </svg>
+                <div>
+                  <div className="text-[9px] uppercase tracking-wider text-blue-100">Telegram Bot</div>
+                  <div className="font-extrabold text-[12px] leading-tight">@HosilBozorBot</div>
+                </div>
+              </a>
               <a
                 href="#"
                 className="bg-[#2B231A] text-white px-3.5 py-2 rounded-xl flex items-center space-x-2 hover:bg-black transition shadow-sm text-xs"
