@@ -1,4 +1,5 @@
 import React from "react";
+import "./globals.css";
 
 export const metadata = {
   title: "HosilBozor — O'zbekiston Agrar Bozor Web Platformasi",
@@ -11,32 +12,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="uz">
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-        />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-          rel="stylesheet"
-        />
-        <style>{`
-          body {
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: #F8F6F0;
-            color: #1A1A1A;
-          }
-          .wooden-nav {
-            background: linear-gradient(135deg, #E6DDD0 0%, #DFD5C5 50%, #D8CDBC 100%);
-            box-shadow: 0 4px 20px -2px rgba(160, 140, 110, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.45);
-            border: 1px solid rgba(210, 195, 175, 0.5);
-          }
-        `}</style>
-      </head>
-      <body className="min-h-screen flex flex-col font-sans px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto pt-4">
+    <html lang="uz" suppressHydrationWarning>
+      <body className="min-h-screen flex flex-col font-sans px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto pt-4" suppressHydrationWarning>
         {/* Floating Top Wooden Navbar */}
         <header className="wooden-nav rounded-2xl h-14 px-5 flex items-center justify-between sticky top-4 z-50 mb-8 transition">
           <div className="flex items-center space-x-8">

@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #F8F6F0;
+  color: #1A1A1A;
+}
+
+.wooden-nav {
+  background: linear-gradient(135deg, #E6DDD0 0%, #DFD5C5 50%, #D8CDBC 100%);
+  box-shadow: 0 4px 20px -2px rgba(160, 140, 110, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(210, 195, 175, 0.5);
+}
