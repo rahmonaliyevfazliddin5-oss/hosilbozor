@@ -137,12 +137,18 @@ class OrderService:
         return order_repo.set_status(db, order, OrderStatus.DELIVERED, actor.id, notes)
 
     def complete_order(self, db: Session, buyer: User, order_id: str) -> Order:
+        from app.services.escrow_service import escrow_service
+
         order = self._get_order(db, order_id)
         if order.buyer_id != buyer.id and buyer.role != UserRole.ADMIN:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Faqat xaridor qabul qilishi mumkin")
 
         self._validate_transition(order.status, OrderStatus.COMPLETED)
-        return order_repo.set_status(db, order, OrderStatus.COMPLETED, buyer.id, "Xaridor hosil sifatini tasdiqladi, mablag' ozod qilindi")
+        completed_order = order_repo.set_status(db, order, OrderStatus.COMPLETED, buyer.id, "Xaridor hosil sifatini tasdiqladi, mablag' ozod qilindi")
+
+        # Automatically disburse escrow
+        escrow_service.release_escrow(db, order_id)
+        return completed_order
 
     def raise_dispute(
         self,
@@ -171,10 +177,13 @@ class OrderService:
         return order_repo.set_status(db, order, OrderStatus.DISPUTED, actor.id, f"E'tiroz bildirildi: {payload.reason}")
 
     def cancel_order(self, db: Session, actor: User, order_id: str, reason: str = "Bekor qilindi") -> Order:
+        from app.services.escrow_service import escrow_service
+
         order = self._get_order(db, order_id)
         if actor.id not in (order.buyer_id, order.seller_id) and actor.role != UserRole.ADMIN:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Ruxsat berilmagan")
 
+        prev_status = order.status
         self._validate_transition(order.status, OrderStatus.CANCELLED)
 
         # Restore listing quantity if listing was associated
@@ -184,7 +193,13 @@ class OrderService:
                 order.listing.status = ListingStatus.ACTIVE
             db.commit()
 
-        return order_repo.set_status(db, order, OrderStatus.CANCELLED, actor.id, f"Buyurtma bekor qilindi: {reason}")
+        cancelled_order = order_repo.set_status(db, order, OrderStatus.CANCELLED, actor.id, f"Buyurtma bekor qilindi: {reason}")
+
+        # If funds were deposited in escrow, refund them
+        if prev_status == OrderStatus.PAID_ESCROW:
+            escrow_service.refund_escrow(db, order.id, reason)
+
+        return cancelled_order
 
     def _get_order(self, db: Session, order_id: str) -> Order:
         order = order_repo.get_by_id(db, order_id)
