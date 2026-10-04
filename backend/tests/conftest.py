@@ -117,3 +117,31 @@ def farmer_headers(farmer_token: str) -> dict:
 @pytest.fixture
 def buyer_headers(buyer_token: str) -> dict:
     return {"Authorization": f"Bearer {buyer_token}"}
+
+
+@pytest.fixture
+def admin_user(db: Session) -> User:
+    user = user_repo.create(
+        db,
+        UserCreate(
+            phone="+998900001122",
+            full_name="Admin Nazoratchi",
+            role=UserRole.ADMIN,
+            language="uz_latn"
+        )
+    )
+    return user
+
+
+@pytest.fixture
+def admin_token(admin_user: User) -> str:
+    return create_access_token(
+        subject=admin_user.id,
+        extra_claims={"role": admin_user.role.value, "phone": admin_user.phone}
+    )
+
+
+@pytest.fixture
+def admin_headers(admin_token: str) -> dict:
+    return {"Authorization": f"Bearer {admin_token}"}
+
