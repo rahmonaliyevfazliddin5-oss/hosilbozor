@@ -52,12 +52,6 @@ export default function RootLayout({
 
         {/* Main Body */}
         <main className="flex-1">{children}</main>
-
-        {/* Minimal Footer */}
-        <footer className="py-10 mt-12 border-t border-[#EBE6DC] text-center text-xs text-[#7A7265] space-y-1">
-          <p className="font-bold text-[#3B342A]">🌾 HosilBozor — O'zbekiston Qishloq Xo'jaligi Raqamli Bozori</p>
-          <p>Vositachisiz narx, tasdiqlangan fermerlar, xavfsiz to'lov va yetkazib berish.</p>
-        </footer>
       </body>
     </html>
   );

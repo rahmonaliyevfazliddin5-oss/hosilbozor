@@ -101,6 +101,14 @@ export default function HomePage() {
   const [orderKg, setOrderKg] = useState(1000);
   const [isOrdered, setIsOrdered] = useState(false);
 
+  // Demand offer modal state
+  const [activeOfferDemand, setActiveOfferDemand] = useState<string | null>(null);
+  const [offerPrice, setOfferPrice] = useState("6400");
+  const [offerSent, setOfferSent] = useState(false);
+
+  // Active region tab for Sourcing Map
+  const [selectedRegion, setSelectedRegion] = useState("fargona");
+
   const filteredListings = RECENT_LISTINGS.filter(
     (item) =>
       item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -108,7 +116,7 @@ export default function HomePage() {
   );
 
   return (
-    <div className="space-y-12 pb-10">
+    <div className="space-y-14 pb-6">
       {/* 1. HERO SECTION */}
       <section className="max-w-4xl pt-2">
         <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-extrabold tracking-tight text-[#1C1A17] leading-tight">
@@ -143,7 +151,6 @@ export default function HomePage() {
             />
           </div>
           <button
-            onClick={() => {}}
             className="bg-white border border-[#D5E4D8] hover:bg-[#F2F7F4] text-[#2F6B42] font-bold text-sm px-7 py-2.5 rounded-full transition shadow-sm"
           >
             Qidirish
@@ -292,94 +299,576 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 4. BOTTOM TWO-COLUMN SECTION */}
-      <section className="grid grid-cols-1 lg:grid-cols-2 gap-5" id="yetkazib-berish">
-        {/* Left: Xaridor talablari (Teskari auksion) */}
-        <div className="bg-white border border-[#E8E4DB] rounded-2xl p-6 shadow-sm">
-          <div className="flex items-center justify-between mb-5">
-            <h3 className="text-lg font-extrabold text-[#1C1A17]">Xaridor talablari</h3>
-            <a
-              href="/demand"
-              className="text-xs font-bold text-[#6D6558] bg-[#F1EDE6] px-3 py-1 rounded-full flex items-center space-x-1 hover:bg-[#EAE4DC] transition"
-            >
-              <span>⚖️</span>
-              <span>Teskari auksion</span>
-            </a>
+      {/* 4. SECTION 1 & 2: EXPANDED BUYER DEMANDS & LOGISTICS */}
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-6" id="talablar">
+        {/* SECTION 1: XARIDOR TALABLARI (Teskari auksion) */}
+        <div className="bg-white border border-[#E8E4DB] rounded-3xl p-6 shadow-sm flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between mb-5">
+              <div>
+                <h3 className="text-xl font-extrabold text-[#1C1A17]">
+                  Xaridor talablari (Teskari auksion)
+                </h3>
+                <p className="text-xs text-[#787165] mt-0.5">
+                  Ulgurji xaridorlar talablari bo'yicha to'g'ridan-to'g'ri narx taklif qiling
+                </p>
+              </div>
+              <span className="text-xs font-bold text-[#4F4638] bg-[#F1EDE6] px-3.5 py-1.5 rounded-full flex items-center space-x-1">
+                <span>⚖️</span>
+                <span>Teskari auksion</span>
+              </span>
+            </div>
+
+            <div className="space-y-4">
+              {/* Demand 1 */}
+              <div className="border border-[#F0ECE4] bg-[#FAF8F5] rounded-2xl p-4.5 hover:border-[#D8CFBF] transition">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <span className="font-extrabold text-base text-[#1C1A17] block">
+                      100 tonna pomidor, Toshkent
+                    </span>
+                    <div className="flex items-center space-x-2 mt-2">
+                      <span className="text-[11px] font-bold bg-[#2F6B42] text-white px-2 py-0.5 rounded">
+                        AKTV
+                      </span>
+                      <span className="text-xs text-[#5D5547] flex items-center space-x-1">
+                        <span>⭐</span>
+                        <span className="font-bold">4.9</span>
+                        <span>&bull; Korzinka Ta'minot</span>
+                      </span>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-sm font-extrabold text-[#2F6B42] bg-[#EAF3ED] px-3 py-1 rounded-full">
+                      14 taklif
+                    </span>
+                    <div className="text-[11px] text-[#8C8476] mt-2 font-medium">
+                      ⏱️ 1 kun 4 soat qoldi
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-3.5 pt-3 border-t border-[#EBE7DF] flex items-center justify-between">
+                  <span className="text-xs text-[#5D5547]">Maks. narx: <strong>6 800 so'm/kg</strong></span>
+                  <button
+                    onClick={() => {
+                      setActiveOfferDemand("100 tonna pomidor, Toshkent");
+                      setOfferSent(false);
+                    }}
+                    className="px-4 py-1.5 rounded-xl bg-white border border-[#306C43] text-[#2F6B42] hover:bg-[#F2F7F4] font-bold text-xs transition shadow-sm"
+                  >
+                    Taklif yuborish
+                  </button>
+                </div>
+              </div>
+
+              {/* Demand 2 */}
+              <div className="border border-[#F0ECE4] bg-[#FAF8F5] rounded-2xl p-4.5 hover:border-[#D8CFBF] transition">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <span className="font-extrabold text-base text-[#1C1A17] block">
+                      40 tonna kartoshka, Samarqand
+                    </span>
+                    <div className="flex items-center space-x-2 mt-2">
+                      <span className="text-[11px] font-bold bg-[#2F6B42] text-white px-2 py-0.5 rounded">
+                        AKTV
+                      </span>
+                      <span className="text-xs text-[#5D5547] flex items-center space-x-1">
+                        <span>⭐</span>
+                        <span className="font-bold">4.8</span>
+                        <span>&bull; Afrosiyob Agro MChJ</span>
+                      </span>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-sm font-extrabold text-[#2F6B42] bg-[#EAF3ED] px-3 py-1 rounded-full">
+                      6 taklif
+                    </span>
+                    <div className="text-[11px] text-[#8C8476] mt-2 font-medium">
+                      ⏱️ 3 kun qoldi
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-3.5 pt-3 border-t border-[#EBE7DF] flex items-center justify-between">
+                  <span className="text-xs text-[#5D5547]">Maks. narx: <strong>3 200 so'm/kg</strong></span>
+                  <button
+                    onClick={() => {
+                      setActiveOfferDemand("40 tonna kartoshka, Samarqand");
+                      setOfferSent(false);
+                    }}
+                    className="px-4 py-1.5 rounded-xl bg-white border border-[#306C43] text-[#2F6B42] hover:bg-[#F2F7F4] font-bold text-xs transition shadow-sm"
+                  >
+                    Taklif yuborish
+                  </button>
+                </div>
+              </div>
+
+              {/* Demand 3 */}
+              <div className="border border-[#F0ECE4] bg-[#FAF8F5] rounded-2xl p-4.5 hover:border-[#D8CFBF] transition">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <span className="font-extrabold text-base text-[#1C1A17] block">
+                      20 tonna olma, Namangan
+                    </span>
+                    <div className="flex items-center space-x-2 mt-2">
+                      <span className="text-[11px] font-bold bg-[#8A7F6E] text-white px-2 py-0.5 rounded">
+                        YANGI
+                      </span>
+                      <span className="text-xs text-[#5D5547] flex items-center space-x-1">
+                        <span>⭐</span>
+                        <span className="font-bold">5.0</span>
+                        <span>&bull; Silk Road Fresh</span>
+                      </span>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-sm font-bold text-[#7E7465] bg-[#F3F0EA] px-3 py-1 rounded-full">
+                      2 taklif
+                    </span>
+                    <div className="text-[11px] text-[#8C8476] mt-2 font-medium">
+                      ⏱️ 5 kun qoldi
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-3.5 pt-3 border-t border-[#EBE7DF] flex items-center justify-between">
+                  <span className="text-xs text-[#5D5547]">Maks. narx: <strong>9 000 so'm/kg</strong></span>
+                  <button
+                    onClick={() => {
+                      setActiveOfferDemand("20 tonna olma, Namangan");
+                      setOfferSent(false);
+                    }}
+                    className="px-4 py-1.5 rounded-xl bg-white border border-[#306C43] text-[#2F6B42] hover:bg-[#F2F7F4] font-bold text-xs transition shadow-sm"
+                  >
+                    Taklif yuborish
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div className="space-y-3.5 divide-y divide-[#F1EFEA]">
-            <div className="pt-1 flex items-center justify-between">
-              <div className="text-sm font-semibold text-[#2C2720]">
-                100 tonna pomidor, Toshkent
-              </div>
-              <div className="text-sm font-bold text-[#2F6B42] bg-[#EAF3ED] px-3 py-1 rounded-lg">
-                14 taklif
-              </div>
-            </div>
-
-            <div className="pt-3.5 flex items-center justify-between">
-              <div className="text-sm font-semibold text-[#2C2720]">
-                20 tonna olma, Samarqand
-              </div>
-              <div className="text-sm font-bold text-[#7E7465] bg-[#F3F0EA] px-3 py-1 rounded-lg">
-                X taklif
-              </div>
-            </div>
-
-            <div className="pt-3.5 flex items-center justify-between">
-              <div className="text-sm font-semibold text-[#2C2720]">
-                50 tonna qizil kartoshka, Andijon
-              </div>
-              <div className="text-sm font-bold text-[#2F6B42] bg-[#EAF3ED] px-3 py-1 rounded-lg">
-                8 taklif
-              </div>
-            </div>
+          <div className="mt-5 pt-3 border-t border-[#F0ECE4] flex items-center justify-between text-xs text-[#736C61]">
+            <span>Talablar bo'yicha g'olib xaridor tomonidan tanlanadi</span>
+            <a href="/demand" className="font-bold text-[#2F6B42] hover:underline">
+              Barcha talablar doskasi &rarr;
+            </a>
           </div>
         </div>
 
-        {/* Right: Yetkazib berish (Logistika & 3D Icons) */}
-        <div className="bg-white border border-[#E8E4DB] rounded-2xl p-6 shadow-sm flex flex-col justify-between">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-extrabold text-[#1C1A17]">Yetkazib berish</h3>
-            <span className="text-xs text-[#736C61] font-semibold">
-              Kafolatlangan logistika
-            </span>
+        {/* SECTION 2: YETKAZIB BERISH XIZMATI (Logistics & Delivery) */}
+        <div className="bg-white border border-[#E8E4DB] rounded-3xl p-6 shadow-sm flex flex-col justify-between" id="yetkazib-berish">
+          <div>
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <h3 className="text-xl font-extrabold text-[#1C1A17]">
+                  Yetkazib berish xizmati
+                </h3>
+                <p className="text-xs text-[#787165] mt-0.5">
+                  Hosilni sovitgichli mashinalarda daladan omborga xavfsiz yetkazish
+                </p>
+              </div>
+              <span className="text-xs font-bold text-[#2F6B42] bg-[#EAF3ED] px-3 py-1 rounded-full">
+                Real-vaqt marshrut
+              </span>
+            </div>
+
+            {/* Logistics Grid: Route Preview + Vehicle Specs */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mb-5">
+              {/* Route Preview Graphic */}
+              <div className="bg-[#FAF8F5] border border-[#EBE7DF] rounded-2xl p-3.5 flex flex-col justify-between relative overflow-hidden">
+                <div className="flex items-center justify-between text-[11px] font-bold text-[#5A5245]">
+                  <span>Marshrut: Toshkent ➔ Farg'ona</span>
+                </div>
+                <div className="my-3 flex items-center justify-center">
+                  <div className="w-full h-12 bg-white rounded-xl border border-[#E5E0D5] flex items-center justify-around px-2 relative">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#2F6B42]"></span>
+                    <div className="h-0.5 flex-1 mx-2 bg-gradient-to-r from-[#2F6B42] via-amber-400 to-[#2F6B42]"></div>
+                    <span className="text-base">🚚</span>
+                    <div className="h-0.5 flex-1 mx-2 bg-gray-200"></div>
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-400"></span>
+                  </div>
+                </div>
+                <div className="text-[11px] text-[#7A7264] flex justify-between font-semibold">
+                  <span>320 km</span>
+                  <span className="text-[#2F6B42]">Yo'lda (Faol)</span>
+                </div>
+              </div>
+
+              {/* Isuzu 5t Spec */}
+              <div className="bg-[#FAF8F5] border border-[#EBE7DF] rounded-2xl p-3.5 text-center flex flex-col items-center justify-between">
+                <div className="text-2xl filter drop-shadow">🚛</div>
+                <div>
+                  <div className="font-extrabold text-sm text-[#1C1A17]">Isuzu 5t (Ref)</div>
+                  <div className="text-[11px] text-[#7A7264] mt-0.5 font-medium">Sovutgichli termoboks</div>
+                </div>
+                <span className="text-[10px] font-bold px-2 py-0.5 bg-blue-50 text-blue-700 rounded-full">
+                  🌡️ +2°C dan -18°C
+                </span>
+              </div>
+
+              {/* Kamaz 20t Spec */}
+              <div className="bg-[#FAF8F5] border border-[#EBE7DF] rounded-2xl p-3.5 text-center flex flex-col items-center justify-between">
+                <div className="text-2xl filter drop-shadow">🚚</div>
+                <div>
+                  <div className="font-extrabold text-sm text-[#1C1A17]">Kamaz 20t (Katta)</div>
+                  <div className="text-[11px] text-[#7A7264] mt-0.5 font-medium">Uzoq viloyatlararo fura</div>
+                </div>
+                <span className="text-[10px] font-bold px-2 py-0.5 bg-amber-50 text-amber-800 rounded-full">
+                  📦 20 tonna sig'im
+                </span>
+              </div>
+            </div>
+
+            {/* Drivers & Escrow Badges */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {/* Driver 1 */}
+              <div className="bg-[#FAF8F5] border border-[#EBE7DF] rounded-2xl p-3 flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-full bg-[#E5DFD3] flex items-center justify-center text-sm font-bold text-[#443B2E]">
+                  DY
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-[#1C1A17]">Davron Haydovchi</div>
+                  <div className="text-[11px] text-amber-600 font-semibold flex items-center space-x-0.5">
+                    <span>★</span>
+                    <span>4.9 (42 safar)</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Driver 2 */}
+              <div className="bg-[#FAF8F5] border border-[#EBE7DF] rounded-2xl p-3 flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-full bg-[#E5DFD3] flex items-center justify-center text-sm font-bold text-[#443B2E]">
+                  JK
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-[#1C1A17]">Jasur Karimov</div>
+                  <div className="text-[11px] text-amber-600 font-semibold flex items-center space-x-0.5">
+                    <span>★</span>
+                    <span>4.8 (28 safar)</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Escrow Guarantee Badge */}
+              <div className="bg-[#EBF3ED] border border-[#CDE3D3] rounded-2xl p-3 flex items-center space-x-2.5">
+                <div className="w-8 h-8 rounded-full bg-[#2F6B42] text-white flex items-center justify-center text-sm">
+                  🛡️
+                </div>
+                <div>
+                  <div className="text-xs font-extrabold text-[#1B4D2C]">Xavfsiz to'lov</div>
+                  <div className="text-[10px] text-[#2F6B42] font-semibold">100% Escrow kafolati</div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* 3D Elements Row */}
-          <div className="grid grid-cols-3 gap-4 my-2">
-            <div className="bg-[#FAF8F5] border border-[#EBE7DF] rounded-2xl p-3.5 text-center flex flex-col items-center justify-center space-y-1.5">
-              <div className="text-3xl filter drop-shadow">🚚</div>
-              <div className="text-xs font-bold text-[#3B342A]">Yo'ldosh Yuklar</div>
-              <div className="text-[11px] text-[#7E7567]">Bo'sh qaytmaydi</div>
-            </div>
-
-            <div className="bg-[#FAF8F5] border border-[#EBE7DF] rounded-2xl p-3.5 text-center flex flex-col items-center justify-center space-y-1.5">
-              <div className="text-3xl filter drop-shadow">🛡️</div>
-              <div className="text-xs font-bold text-[#3B342A]">Escrow To'lov</div>
-              <div className="text-[11px] text-[#7E7567]">100% himoyalangan</div>
-            </div>
-
-            <div className="bg-[#FAF8F5] border border-[#EBE7DF] rounded-2xl p-3.5 text-center flex flex-col items-center justify-center space-y-1.5">
-              <div className="text-3xl filter drop-shadow">⭐</div>
-              <div className="text-xs font-bold text-[#3B342A]">Tasdiqlangan</div>
-              <div className="text-[11px] text-[#7E7567]">Ishonchli haydovchi</div>
-            </div>
-          </div>
-
-          <div className="pt-2 text-xs text-[#736C61] flex items-center justify-between border-t border-[#F1EFEA]">
-            <span>6 xonali topshirish kodi bilan xavfsiz to'lov</span>
-            <a
-              href="https://t.me/HosilBozorBot"
-              target="_blank"
-              rel="noreferrer"
-              className="font-bold text-[#2F6B42] hover:underline"
-            >
-              Haydovchi bo'lish &rarr;
+          <div className="mt-5 pt-3 border-t border-[#F0ECE4] flex items-center justify-between text-xs text-[#736C61]">
+            <span>6 xonali topshirish kodi orqali pul haydovchiga beriladi</span>
+            <a href="https://t.me/HosilBozorBot" target="_blank" rel="noreferrer" className="font-bold text-[#2F6B42] hover:underline">
+              Haydovchi sifatida ulanish &rarr;
             </a>
           </div>
         </div>
       </section>
+
+      {/* 5. SECTION 3: REGIONAL SOURCING MAP & ANALYTICS */}
+      <section className="bg-white border border-[#E8E4DB] rounded-3xl p-6 sm:p-8 shadow-sm">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+          <div>
+            <h3 className="text-xl sm:text-2xl font-extrabold text-[#1C1A17]">
+              Mintaqaviy manbalar va tahlillar (Sourcing Map)
+            </h3>
+            <p className="text-xs sm:text-sm text-[#787165] mt-1">
+              O'zbekiston viloyatlari bo'yicha faol hosil yig'imi, ulgurji narxlar dinamikasi va haftalik hajm statistikasi
+            </p>
+          </div>
+
+          {/* Region Tabs */}
+          <div className="flex flex-wrap gap-2">
+            {[
+              { id: "fargona", label: "Farg'ona vodiysi" },
+              { id: "toshkent", label: "Toshkent viloyati" },
+              { id: "samarqand", label: "Samarqand" },
+              { id: "surxondaryo", label: "Surxondaryo" },
+            ].map((r) => (
+              <button
+                key={r.id}
+                onClick={() => setSelectedRegion(r.id)}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition ${
+                  selectedRegion === r.id
+                    ? "bg-[#2F6B42] text-white shadow-sm"
+                    : "bg-[#F3EFE8] text-[#554D41] hover:bg-[#EAE4D9]"
+                }`}
+              >
+                {r.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Interactive Uzbekistan Vector Sourcing Visual Map */}
+          <div className="lg:col-span-2 bg-[#FAF8F5] border border-[#EBE7DF] rounded-2xl p-6 relative overflow-hidden flex flex-col justify-between min-h-[300px]">
+            <div className="flex items-center justify-between text-xs text-[#736C61] font-semibold mb-4">
+              <span>🗺️ O'zbekiston Qishloq Xo'jaligi Xaritasi</span>
+              <span className="flex items-center space-x-3">
+                <span className="flex items-center space-x-1">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#2F6B42]"></span>
+                  <span>Faol hududlar</span>
+                </span>
+                <span className="flex items-center space-x-1">
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                  <span>Yuqori hosil</span>
+                </span>
+              </span>
+            </div>
+
+            {/* Stylized Uzbekistan Region Node Map */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 my-auto py-2">
+              <div className={`p-4 rounded-xl border transition ${selectedRegion === "fargona" ? "bg-white border-[#2F6B42] shadow-md ring-2 ring-[#2F6B42]/20" : "bg-white/80 border-[#E5E0D5]"}`}>
+                <div className="flex items-center justify-between">
+                  <span className="font-extrabold text-sm text-[#1C1A17]">Farg'ona</span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#2F6B42] animate-pulse"></span>
+                </div>
+                <div className="text-xs text-[#736C61] mt-1">Uzum, Anor, Pomidor</div>
+                <div className="text-sm font-black text-[#2F6B42] mt-2">12 400 t hosil</div>
+              </div>
+
+              <div className={`p-4 rounded-xl border transition ${selectedRegion === "toshkent" ? "bg-white border-[#2F6B42] shadow-md ring-2 ring-[#2F6B42]/20" : "bg-white/80 border-[#E5E0D5]"}`}>
+                <div className="flex items-center justify-between">
+                  <span className="font-extrabold text-sm text-[#1C1A17]">Toshkent vil.</span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                </div>
+                <div className="text-xs text-[#736C61] mt-1">Bodring, Ko'katlar, Pomidor</div>
+                <div className="text-sm font-black text-[#2F6B42] mt-2">18 200 t hosil</div>
+              </div>
+
+              <div className={`p-4 rounded-xl border transition ${selectedRegion === "samarqand" ? "bg-white border-[#2F6B42] shadow-md ring-2 ring-[#2F6B42]/20" : "bg-white/80 border-[#E5E0D5]"}`}>
+                <div className="flex items-center justify-between">
+                  <span className="font-extrabold text-sm text-[#1C1A17]">Samarqand</span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#2F6B42]"></span>
+                </div>
+                <div className="text-xs text-[#736C61] mt-1">Kartoshka, Piyoz, Olma</div>
+                <div className="text-sm font-black text-[#2F6B42] mt-2">24 800 t hosil</div>
+              </div>
+
+              <div className={`p-4 rounded-xl border transition ${selectedRegion === "surxondaryo" ? "bg-white border-[#2F6B42] shadow-md ring-2 ring-[#2F6B42]/20" : "bg-white/80 border-[#E5E0D5]"}`}>
+                <div className="flex items-center justify-between">
+                  <span className="font-extrabold text-sm text-[#1C1A17]">Surxondaryo</span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#2F6B42]"></span>
+                </div>
+                <div className="text-xs text-[#736C61] mt-1">Erta pishar hosil, Anor</div>
+                <div className="text-sm font-black text-[#2F6B42] mt-2">9 600 t hosil</div>
+              </div>
+
+              <div className="p-4 rounded-xl bg-white/80 border border-[#E5E0D5]">
+                <div className="flex items-center justify-between">
+                  <span className="font-extrabold text-sm text-[#1C1A17]">Buxoro & Xorazm</span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-gray-300"></span>
+                </div>
+                <div className="text-xs text-[#736C61] mt-1">Qovun, Tarvuz, Sabzi</div>
+                <div className="text-sm font-black text-[#2F6B42] mt-2">15 100 t hosil</div>
+              </div>
+
+              <div className="p-4 rounded-xl bg-white/80 border border-[#E5E0D5]">
+                <div className="flex items-center justify-between">
+                  <span className="font-extrabold text-sm text-[#1C1A17]">Andijon</span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#2F6B42]"></span>
+                </div>
+                <div className="text-xs text-[#736C61] mt-1">Gilos, O'rik, Shaftoli</div>
+                <div className="text-sm font-black text-[#2F6B42] mt-2">8 900 t hosil</div>
+              </div>
+            </div>
+
+            <div className="mt-4 pt-3 border-t border-[#EAE4D9] flex items-center justify-between text-xs text-[#787165]">
+              <span>Viloyatlar bo'yicha to'g'ridan-to'g'ri fermerlar bazasi mavjud</span>
+              <span className="font-bold text-[#2F6B42]">Jami: 89 000 tonna taklif</span>
+            </div>
+          </div>
+
+          {/* Wholesale Prices & Weekly Volume Trend Charts */}
+          <div className="space-y-4">
+            {/* Price Chart Card */}
+            <div className="bg-[#FAF8F5] border border-[#EBE7DF] rounded-2xl p-5">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs font-extrabold text-[#1C1A17]">
+                  O'rtacha ulgurji narx dinamikasi
+                </span>
+                <span className="text-[11px] font-bold text-[#2F6B42] bg-[#EAF3ED] px-2 py-0.5 rounded">
+                  Haftalik +3.4%
+                </span>
+              </div>
+              <div className="text-2xl font-black text-[#1C1A17]">
+                5 450 <span className="text-xs font-normal text-[#736C61]">so'm/kg indeks</span>
+              </div>
+              {/* Minimalist SVG Sparkline */}
+              <div className="mt-3 h-14 w-full">
+                <svg className="w-full h-full" viewBox="0 0 200 40" preserveAspectRatio="none">
+                  <path
+                    d="M 0 32 Q 30 18, 60 25 T 120 15 T 160 8 T 200 4"
+                    fill="none"
+                    stroke="#2F6B42"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                  />
+                  <linearGradient id="grad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#2F6B42" stopOpacity="0.2" />
+                    <stop offset="100%" stopColor="#2F6B42" stopOpacity="0" />
+                  </linearGradient>
+                  <path
+                    d="M 0 32 Q 30 18, 60 25 T 120 15 T 160 8 T 200 4 L 200 40 L 0 40 Z"
+                    fill="url(#grad)"
+                  />
+                </svg>
+              </div>
+              <div className="flex justify-between text-[10px] text-[#8C8476] mt-1 font-semibold">
+                <span>Dush</span>
+                <span>Sesh</span>
+                <span>Chor</span>
+                <span>Pay</span>
+                <span>Jum</span>
+                <span>Shan</span>
+                <span>Yak</span>
+              </div>
+            </div>
+
+            {/* Weekly Volume Bar Chart */}
+            <div className="bg-[#FAF8F5] border border-[#EBE7DF] rounded-2xl p-5">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs font-extrabold text-[#1C1A17]">
+                  Haftalik yetkazilgan hajm
+                </span>
+                <span className="text-xs font-bold text-[#2F6B42]">
+                  1 700 t / hafta
+                </span>
+              </div>
+              <div className="flex items-end justify-between h-16 pt-2 space-x-2">
+                {[
+                  { day: "D", val: 40 },
+                  { day: "S", val: 65 },
+                  { day: "C", val: 55 },
+                  { day: "P", val: 80 },
+                  { day: "J", val: 70 },
+                  { day: "S", val: 95 },
+                  { day: "Y", val: 50 },
+                ].map((b, idx) => (
+                  <div key={idx} className="flex-1 flex flex-col items-center gap-1">
+                    <div
+                      className="w-full bg-[#2F6B42]/80 hover:bg-[#2F6B42] transition rounded-t-md"
+                      style={{ height: `${b.val}%` }}
+                    ></div>
+                    <span className="text-[10px] text-[#8C8476] font-bold">{b.day}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. SECTION 4: PROFESSIONAL MODERN FOOTER */}
+      <footer className="wooden-nav rounded-3xl p-8 sm:p-10 shadow-lg border border-[#D5CAB8] text-[#362D22]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8 pb-8 border-b border-[#D8CEBE]">
+          {/* Brand Info */}
+          <div className="lg:col-span-2 space-y-4">
+            <div className="flex items-center space-x-2.5">
+              <div className="w-9 h-9 rounded-xl bg-[#3F7C4E] flex items-center justify-center text-white text-base shadow-sm">
+                🌿
+              </div>
+              <span className="font-extrabold text-2xl tracking-tight text-[#2B231A]">
+                HosilBozor
+              </span>
+            </div>
+            <p className="text-xs text-[#5C5243] max-w-sm leading-relaxed">
+              O'zbekistonning birinchi raqamli agrar birjasi. Fermerlar, ulgurji xaridorlar va haydovchilarni to'g'ridan-to'g'ri bog'lovchi shaffof ekotizim.
+            </p>
+            {/* Mobile App Download Badges */}
+            <div className="flex items-center space-x-3 pt-2">
+              <a
+                href="#"
+                className="bg-[#2B231A] text-white px-3.5 py-2 rounded-xl flex items-center space-x-2 hover:bg-black transition shadow-sm text-xs"
+              >
+                <span>🍏</span>
+                <div>
+                  <div className="text-[9px] uppercase tracking-wider text-gray-300">Yuklab oling</div>
+                  <div className="font-bold text-[11px] leading-tight">App Store</div>
+                </div>
+              </a>
+              <a
+                href="#"
+                className="bg-[#2B231A] text-white px-3.5 py-2 rounded-xl flex items-center space-x-2 hover:bg-black transition shadow-sm text-xs"
+              >
+                <span>🤖</span>
+                <div>
+                  <div className="text-[9px] uppercase tracking-wider text-gray-300">Yuklab oling</div>
+                  <div className="font-bold text-[11px] leading-tight">Google Play</div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          {/* Links Column 1: Fermerlarga */}
+          <div className="space-y-3">
+            <h4 className="font-extrabold text-sm text-[#241C13]">Fermerlarga</h4>
+            <ul className="space-y-2 text-xs text-[#554B3E]">
+              <li><a href="https://t.me/HosilBozorBot" target="_blank" rel="noreferrer" className="hover:text-black transition">Telegram Botda e'lon berish</a></li>
+              <li><a href="/#narxlar" className="hover:text-black transition">Kunlik bozor narxlari</a></li>
+              <li><a href="/listings" className="hover:text-black transition">Mavjud hosil monitoringi</a></li>
+              <li><a href="/#talablar" className="hover:text-black transition">Teskari auksion takliflari</a></li>
+            </ul>
+          </div>
+
+          {/* Links Column 2: Xaridorlarga */}
+          <div className="space-y-3">
+            <h4 className="font-extrabold text-sm text-[#241C13]">Xaridorlarga</h4>
+            <ul className="space-y-2 text-xs text-[#554B3E]">
+              <li><a href="/listings" className="hover:text-black transition">Ulgurji hosil xaridi</a></li>
+              <li><a href="/demand" className="hover:text-black transition">Talab e'lon qilish</a></li>
+              <li><a href="/#yetkazib-berish" className="hover:text-black transition">Escrow xavfsiz to'lov</a></li>
+              <li><a href="/admin" className="hover:text-black transition">Tasdiqlangan fermerlar</a></li>
+            </ul>
+          </div>
+
+          {/* Links Column 3: Logistika & Hujjatlar */}
+          <div className="space-y-3">
+            <h4 className="font-extrabold text-sm text-[#241C13]">Logistika & Huquqiy</h4>
+            <ul className="space-y-2 text-xs text-[#554B3E]">
+              <li><a href="/#yetkazib-berish" className="hover:text-black transition">Yo'ldosh yuklar logistikasi</a></li>
+              <li><a href="https://t.me/HosilBozorBot" target="_blank" rel="noreferrer" className="hover:text-black transition">Haydovchilar reytingi</a></li>
+              <li><a href="#" className="hover:text-black transition">Foydalanish shartlari</a></li>
+              <li><a href="#" className="hover:text-black transition">Maxfiylik siyosati</a></li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Footer Bottom: Payment Icons, Language, Copyright */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#5C5243]">
+          <div className="flex items-center space-x-3">
+            <span className="font-bold text-[#3B3224]">Xavfsiz To'lov Tizimlari:</span>
+            <span className="px-2.5 py-1 bg-white/70 rounded-lg font-bold text-[#201A12] border border-[#DDD3C2]">
+              UZCARD
+            </span>
+            <span className="px-2.5 py-1 bg-white/70 rounded-lg font-bold text-[#201A12] border border-[#DDD3C2]">
+              HUMO
+            </span>
+            <span className="px-2.5 py-1 bg-white/70 rounded-lg font-bold text-[#201A12] border border-[#DDD3C2]">
+              Payme
+            </span>
+            <span className="px-2.5 py-1 bg-white/70 rounded-lg font-bold text-[#201A12] border border-[#DDD3C2]">
+              Click
+            </span>
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <select className="bg-white/70 border border-[#D5CAB8] rounded-xl px-3 py-1.5 font-bold text-xs text-[#2F261B] outline-none">
+              <option value="uz_latn">🇺🇿 O'zbekcha (Lotin)</option>
+              <option value="uz_cyrl">🇺🇿 Ўзбекча (Кирилл)</option>
+              <option value="ru">🇷🇺 Русский</option>
+            </select>
+            <span className="font-medium">
+              &copy; 2026 HosilBozor. Barcha huquqlar himoyalangan.
+            </span>
+          </div>
+        </div>
+      </footer>
 
       {/* Escrow Purchase Modal */}
       {selectedListing && (
@@ -492,6 +981,76 @@ export default function HomePage() {
                 </div>
                 <button
                   onClick={() => setSelectedListing(null)}
+                  className="w-full py-2.5 rounded-xl bg-[#1C1A17] text-white font-bold text-xs"
+                >
+                  Yopish
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Demand Offer Modal */}
+      {activeOfferDemand && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl relative border border-[#E8E4DB]">
+            <button
+              onClick={() => setActiveOfferDemand(null)}
+              className="absolute top-5 right-5 text-gray-400 hover:text-gray-600 text-xl font-bold"
+            >
+              &times;
+            </button>
+
+            {!offerSent ? (
+              <div className="space-y-4">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 rounded-xl bg-[#FAF8F5] flex items-center justify-center text-xl border border-[#EBE7DF]">
+                    ⚖️
+                  </div>
+                  <div>
+                    <h3 className="font-extrabold text-base text-[#1C1A17]">
+                      Fermer Narx Taklifi
+                    </h3>
+                    <p className="text-xs text-gray-500">{activeOfferDemand}</p>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">
+                    Taklif qilinadigan narx (so'm/kg):
+                  </label>
+                  <input
+                    type="number"
+                    value={offerPrice}
+                    onChange={(e) => setOfferPrice(e.target.value)}
+                    className="w-full px-3.5 py-2.5 border border-gray-300 rounded-xl font-bold text-base text-[#2F6B42] focus:ring-2 focus:ring-[#2F6B42] focus:outline-none"
+                  />
+                  <span className="text-[11px] text-gray-400 mt-1 block">
+                    Xaridor auksion yakunida eng maqbul taklifni tanlaydi
+                  </span>
+                </div>
+
+                <button
+                  onClick={() => setOfferSent(true)}
+                  className="w-full py-3 rounded-xl bg-[#2F6B42] hover:bg-[#285D39] text-white font-bold text-sm shadow-md transition"
+                >
+                  Taklifni Yuborish (Teskari Auksion)
+                </button>
+              </div>
+            ) : (
+              <div className="text-center py-4 space-y-3">
+                <div className="w-14 h-14 bg-[#E8F2EC] text-[#2F6B42] rounded-full flex items-center justify-center mx-auto text-2xl font-black">
+                  ✓
+                </div>
+                <h3 className="font-extrabold text-lg text-[#1C1A17]">
+                  Taklif muvaffaqiyatli yuborildi!
+                </h3>
+                <p className="text-xs text-gray-500">
+                  {offerPrice} so'm/kg taklifingiz xaridorga yetkazildi. Natija bot orqali bildiriladi.
+                </p>
+                <button
+                  onClick={() => setActiveOfferDemand(null)}
                   className="w-full py-2.5 rounded-xl bg-[#1C1A17] text-white font-bold text-xs"
                 >
                   Yopish
