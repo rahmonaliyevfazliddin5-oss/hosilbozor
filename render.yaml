@@ -1,0 +1,51 @@
+services:
+  # 1. HosilBozor Backend API (FastAPI)
+  - type: web
+    name: hosilbozor-backend
+    env: python
+    region: frankfurt
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: PROJECT_NAME
+        value: HosilBozor
+      - key: SECRET_KEY
+        generateValue: true
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: hosilbozor-db
+          property: connectionString
+      - key: CORS_ORIGINS
+        value: "*"
+
+  # 2. HosilBozor Frontend (Next.js 14)
+  - type: web
+    name: hosilbozor-frontend
+    env: node
+    region: frankfurt
+    plan: free
+    rootDir: web
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: hosilbozor-backend
+          property: host
+
+databases:
+  # PostgreSQL Database
+  - name: hosilbozor-db
+    databaseName: hosilbozor
+    user: hosilbozor_user
+    region: frankfurt
+    plan: free
